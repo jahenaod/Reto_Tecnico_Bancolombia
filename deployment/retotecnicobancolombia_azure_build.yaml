@@ -2,9 +2,9 @@ name: $(Build.SourceBranchName).$(date:yyyyMMdd)$(rev:.r)
 
 variables:
   - name: 'Artifactory.Repository'
-    value: 'build-reto_tecnico_bancolombia'
+    value: 'build-RetoTecnicoBancolombia'
   - name: 'Artifact.Name'
-    value: 'reto_tecnico_bancolombia'
+    value: 'RetoTecnicoBancolombia'
 
 resources:
   - repo: self

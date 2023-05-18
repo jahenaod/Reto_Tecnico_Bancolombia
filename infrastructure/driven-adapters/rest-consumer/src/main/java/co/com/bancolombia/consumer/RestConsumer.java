@@ -1,52 +1,58 @@
 package co.com.bancolombia.consumer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.MediaType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.SpringApplication;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class RestConsumer /* implements Gateway from domain */{
+public class RestConsumer // implements Gateway from domain
+{
 
-    private final WebClient client;
+    @Value("${adapter.restconsumer.url}")
+    private String url;
+    private final OkHttpClient client;
+    private final ObjectMapper mapper;
 
 
-    // these methods are an example that illustrates the implementation of WebClient.
+    // these methods are an example that illustrates the implementation of OKHTTP Client.
     // You should use the methods that you implement from the Gateway from the domain.
 
-    public Mono<ObjectResponse> getObjectByName(String name) {
-        return client.get()
-                .uri("/name/{name}", name )  // Set the API endpoint URI
-                .retrieve()
-                .bodyToMono(ObjectResponse.class);
-    }
+    public ObjectResponse testGet() throws IOException {
 
-    public Mono<ObjectResponse> getObjectsAll(String name) {
-        return client.get()
-                .uri("/all", name )  // Set the API endpoint URI
-                .retrieve()
-                .bodyToMono(ObjectResponse.class);
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(RestConsumer.class);
-    }
-
-    /*
-    public Mono<ObjectResponse> testPost() {
-
-        ObjectRequest request = ObjectRequest.builder()
-            .val1("exampleval1")
-            .val2("exampleval2")
+        Request request = new Request.Builder()
+            .url(url)
+            .get()
+            .addHeader("Content-Type","application/json")
             .build();
 
-        return client
-            .post()
-            .body(Mono.just(request), ObjectRequest.class)
-            .retrieve()
-            .bodyToMono(ObjectResponse.class);
+        return mapper.readValue(client.newCall(request).execute().body().string(), ObjectResponse.class);
     }
-    */
+
+    public ObjectResponse testPost() throws IOException {
+        String json = mapper.writeValueAsString(ObjectRequest.builder()
+            .val1("exampleval1")
+            .val2("exampleval1")
+            .build()
+        );
+
+        RequestBody requestBody = RequestBody
+            .create(json, MediaType.parse("application/json; charset=utf-8"));
+
+        Request request = new Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .addHeader("Content-Type","application/json")
+            .build();
+
+        return mapper.readValue(client.newCall(request).execute().body().string(), ObjectResponse.class);
+
+    }
+
 }

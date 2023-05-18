@@ -1,4 +1,4 @@
-package co.com.bancolombia.model.reto_tecnico_bancolombia;
+package co.com.bancolombia.model.retotecnicobancolombia;
 import lombok.Builder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,5 @@ import lombok.Setter;
 //@NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class Reto_tecnico_bancolombia {
-    private long population;
-    private double area;
+public class RetoTecnicoBancolombia {
 }
