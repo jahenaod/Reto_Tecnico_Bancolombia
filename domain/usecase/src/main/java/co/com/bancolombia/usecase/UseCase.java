@@ -1,4 +1,4 @@
-package co.com.bancolombia.usecase.;
+package co.com.bancolombia.usecase;
 
 import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor

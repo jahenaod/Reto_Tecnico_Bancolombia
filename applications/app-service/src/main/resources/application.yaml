@@ -14,7 +14,7 @@ spring:
 adapter:
   restconsumer:
     timeout: 5000
-    url: "https://restcountries.com/v3.1/all"
+    url: "https://restcountries.com/v3.1"
 management:
   endpoints:
     web:
