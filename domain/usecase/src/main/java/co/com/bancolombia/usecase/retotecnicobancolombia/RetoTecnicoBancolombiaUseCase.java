@@ -5,7 +5,7 @@ import co.com.bancolombia.model.retotecnicobancolombia.gateways.RetoTecnicoBanco
 import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RetoTecnicoBancolombiaUseCase {
-    private RetoTecnicoBancolombiaRepository retoTecnicoBancolombiaRepository;
+    private final RetoTecnicoBancolombiaRepository retoTecnicoBancolombiaRepository;
 
     public RetoTecnicoBancolombia postContryData(double area, Long population){
         return retoTecnicoBancolombiaRepository.postCountryData(area,population);
