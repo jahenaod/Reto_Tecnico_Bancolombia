@@ -3,6 +3,7 @@ package co.com.bancolombia.consumer;
 import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.ConsumeData;
 import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.gateways.ConsumeDataRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -30,10 +32,7 @@ public class RestConsumer implements ConsumeDataRepository {
                     .build();
 
             Response response = client.newCall(request).execute();
-            String strResponseMessaje = response.message();
-            ObjectResponse res = mapper.readValue(response.body().string(), ObjectResponse.class);
-            response.close();
-            return strResponseMessaje;
+            return response.body().string();
         } catch (IOException e) {
             throw new IOException("An error occurred while processing the data.", e);
         }
@@ -41,12 +40,11 @@ public class RestConsumer implements ConsumeDataRepository {
 
     @Override
     public ConsumeData getDataCountry(String name) throws IOException {
-        //ObjectResponse response = getResponse();
-        ObjectResponse response = mapper.readValue(getResponse(name), ObjectResponse.class);
-        //double area = response.getArea();
-        //Long population = response.getPopulation();
 
-        return ConsumeData.builder().area(response.getArea())
-                .population(response.getPopulation()).build();
+        Gson json = new Gson();
+        ObjectResponse[] response = ObjectResponse.fromJson(getResponse(name));
+
+        return ConsumeData.builder().area(response[0].getArea())
+                .population(response[0].getPopulation()).build();
     }
 }

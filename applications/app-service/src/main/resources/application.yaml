@@ -20,7 +20,7 @@ spring:
     databasePlatform: "org.hibernate.dialect.H2Dialect"
 adapter:
   restconsumer:
-    url: "https://restcountries.com/v3.1/name/"
+    url: "https://restcountries.com/v3.1/name"
 management:
   endpoints:
     web:

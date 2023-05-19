@@ -1,5 +1,6 @@
 package co.com.bancolombia.consumer;
 
+import com.google.gson.Gson;
 import lombok.*;
 
 @Getter
@@ -9,8 +10,12 @@ import lombok.*;
 @Builder(toBuilder = true)
 public class ObjectResponse {
 
-    private String status;
     private long population;
     private double area;
+
+    public static ObjectResponse[] fromJson(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, ObjectResponse[].class);
+    }
 
 }
