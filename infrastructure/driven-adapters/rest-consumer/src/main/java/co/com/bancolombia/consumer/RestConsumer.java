@@ -1,5 +1,6 @@
 package co.com.bancolombia.consumer;
 
+import co.com.bancolombia.consumer.exception.CountryNotFoundException;
 import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.ConsumeData;
 import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.gateways.ConsumeDataRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +32,9 @@ public class RestConsumer implements ConsumeDataRepository {
                     .build();
 
             Response response = client.newCall(request).execute();
+            if (response.code() == 404) {
+                throw new CountryNotFoundException("Country not found");
+            }
             return response.body().string();
         } catch (IOException e) {
             throw new IOException("An error occurred while processing the data.", e);
@@ -40,11 +43,16 @@ public class RestConsumer implements ConsumeDataRepository {
 
     @Override
     public ConsumeData getDataCountry(String name) throws IOException {
+        try {
 
-        Gson json = new Gson();
-        ObjectResponse[] response = ObjectResponse.fromJson(getResponse(name));
 
-        return ConsumeData.builder().area(response[0].getArea())
-                .population(response[0].getPopulation()).build();
+            Gson json = new Gson();
+            ObjectResponse[] response = ObjectResponse.fromJson(getResponse(name));
+            return ConsumeData.builder().area(response[0].getArea())
+                    .population(response[0].getPopulation()).build();
+        } catch (IOException e) {
+            throw new CountryNotFoundException("Error retrieving country data.", e);
+        }
     }
 }
+
