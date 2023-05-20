@@ -1,7 +1,7 @@
 package co.com.bancolombia.consumer;
 
-import co.com.bancolombia.consumer.exception.CountryNotFoundException;
 import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.ConsumeData;
+import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.exception.CountryNotFoundException;
 import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.gateways.ConsumeDataRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -23,7 +23,7 @@ public class RestConsumer implements ConsumeDataRepository {
     private final OkHttpClient client;
     private final ObjectMapper mapper;
 
-    public String getResponse(String name) throws IOException {
+    public String getResponse(String name) throws IOException, CountryNotFoundException {
         try {
             Request request = new Request.Builder()
                     .url(url.concat(name))
@@ -38,13 +38,14 @@ public class RestConsumer implements ConsumeDataRepository {
             return response.body().string();
         } catch (IOException e) {
             throw new IOException("An error occurred while processing the data.", e);
+        }catch (CountryNotFoundException e) {
+            throw e;
         }
     }
 
     @Override
-    public ConsumeData getDataCountry(String name) throws IOException {
+    public ConsumeData getDataCountry(String name) throws CountryNotFoundException {
         try {
-
 
             Gson json = new Gson();
             ObjectResponse[] response = ObjectResponse.fromJson(getResponse(name));
@@ -52,6 +53,8 @@ public class RestConsumer implements ConsumeDataRepository {
                     .population(response[0].getPopulation()).build();
         } catch (IOException e) {
             throw new CountryNotFoundException("Error retrieving country data.", e);
+        }catch (CountryNotFoundException e) {
+            throw e;
         }
     }
 }

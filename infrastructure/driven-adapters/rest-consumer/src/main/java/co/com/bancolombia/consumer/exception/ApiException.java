@@ -1,5 +1,6 @@
 package co.com.bancolombia.consumer.exception;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Getter

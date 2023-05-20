@@ -1,8 +1,6 @@
-package co.com.bancolombia.consumer.exception;
+package co.com.bancolombia.model.retotecnicobancolombiaconsumedata.exception;
 
-import java.io.IOException;
-
-public class CountryNotFoundException extends IOException{
+public class CountryNotFoundException extends Exception {
     public CountryNotFoundException(String message) {
         super(message);
     }

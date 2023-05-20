@@ -1,9 +1,8 @@
 package co.com.bancolombia.model.retotecnicobancolombiaconsumedata.gateways;
 
+import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.exception.CountryNotFoundException;
 import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.ConsumeData;
 
-import java.io.IOException;
-
 public interface ConsumeDataRepository {
-    ConsumeData getDataCountry(String name) throws IOException;
+    ConsumeData getDataCountry(String name) throws CountryNotFoundException;
 }
