@@ -1,18 +1,16 @@
 package co.com.bancolombia.jpa.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "country_logger")
+@Table(name = "logger")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Country {
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long population;
+    private long population;
     private double area;
 }

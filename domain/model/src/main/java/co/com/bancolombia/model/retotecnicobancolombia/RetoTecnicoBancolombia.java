@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class RetoTecnicoBancolombia {
-   // private double area;
-    // private Long population;
+    private double area;
+     private long population;
 }

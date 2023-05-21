@@ -1,31 +1,30 @@
 server:
   port: 8080
+
 spring:
   application:
     name: "RetoTecnicoBancolombia"
   devtools:
     add-properties: false
-  h2:
-    console:
-      enabled: true
-      path: "/h2"
   profiles:
     include: null
   datasource:
-    url: "database-1.cvaompn0vepv.us-east-1.rds.amazonaws.com"
+    url: "jdbc:postgresql://rds-reto.cvaompn0vepv.us-east-1.rds.amazonaws.com:5432/rdsreto"
     username: "postgres"
     password: "bancolombia"
-    driverClassName: "org.h2.Driver"
+    driverClassName: "org.postgresql.Driver"
   jpa:
-    databasePlatform: "org.hibernate.dialect.H2Dialect"
+    databasePlatform: "org.hibernate.dialect.PostgreSQLDialect"
+
 adapter:
   restconsumer:
     url: "https://restcountries.com/v3.1/name/"
+
 management:
   endpoints:
     web:
       exposure:
-        include: "health,prometheus"
+        include: "health, prometheus"
   endpoint:
     health:
       probes:
