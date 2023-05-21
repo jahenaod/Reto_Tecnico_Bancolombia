@@ -18,15 +18,18 @@ public class JPARepositoryAdapter implements RetoTecnicoBancolombiaRepository {
     }
 
     @Override
-    public RetoTecnicoBancolombia postCountryData(double area, long population) {
+    public RetoTecnicoBancolombia postCountryData(String name, double area, long population) {
+        try {
+            CountryEntity entity = new CountryEntity();
+            entity.setArea(area);
+            entity.setPopulation(population);
+            entity.setName(name);
 
-        RetoTecnicoBancolombia entity = new RetoTecnicoBancolombia();
-        entity.setArea(area);
-        entity.setPopulation(population);
-
-        CountryEntity savedEntity = repository.save(mapper.map(entity, CountryEntity.class));
-
-        return mapper.map(savedEntity, RetoTecnicoBancolombia.class);
+            CountryEntity savedEntity = repository.save(entity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

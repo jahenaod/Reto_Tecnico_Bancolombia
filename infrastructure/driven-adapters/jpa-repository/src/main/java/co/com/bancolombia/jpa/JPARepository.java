@@ -5,5 +5,5 @@ import co.com.bancolombia.model.retotecnicobancolombia.RetoTecnicoBancolombia;
 import jakarta.persistence.Table;
 import org.springframework.data.repository.CrudRepository;
 
-public interface JPARepository extends CrudRepository<CountryEntity, String> {
+public interface JPARepository extends CrudRepository<CountryEntity, Integer> {
 }
