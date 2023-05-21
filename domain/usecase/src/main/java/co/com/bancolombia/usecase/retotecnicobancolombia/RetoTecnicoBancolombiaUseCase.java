@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 public class RetoTecnicoBancolombiaUseCase {
     private final RetoTecnicoBancolombiaRepository retoTecnicoBancolombiaRepository;
 
-    public RetoTecnicoBancolombia postContryData(double area, Long population){
+    public RetoTecnicoBancolombia postCountryData(double area, Long population){
         return retoTecnicoBancolombiaRepository.postCountryData(area,population);
     }
 

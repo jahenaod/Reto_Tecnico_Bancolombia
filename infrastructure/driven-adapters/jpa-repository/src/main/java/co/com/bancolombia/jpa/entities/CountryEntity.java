@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CountryEntity {
-    @GeneratedValue(strategy = GenerationType.AUTO)
 
     @Id
-    @Column(name = "population")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "country_sequence")
+    @SequenceGenerator(name = "country_sequence", sequenceName = "custom_sequence_name")
     private long population;
 
     @Column(name = "area")
