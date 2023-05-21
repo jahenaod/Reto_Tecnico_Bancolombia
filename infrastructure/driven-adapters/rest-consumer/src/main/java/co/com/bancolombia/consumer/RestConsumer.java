@@ -1,40 +1,61 @@
 package co.com.bancolombia.consumer;
 
+import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.ConsumeData;
+import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.exception.CountryNotFoundException;
+import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.gateways.ConsumeDataRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class RestConsumer /* implements Gateway from domain */{
+public class RestConsumer implements ConsumeDataRepository {
 
-    private final WebClient client;
+    @Value("${adapter.restconsumer.url}")
+    private String url;
+    private final OkHttpClient client;
+    private final ObjectMapper mapper;
 
+    public String getResponse(String name) throws IOException, CountryNotFoundException {
+        try {
+            Request request = new Request.Builder()
+                    .url(url.concat(name))
+                    .get()
+                    .addHeader("Content-Type", "application/json")
+                    .build();
 
-    // these methods are an example that illustrates the implementation of WebClient.
-    // You should use the methods that you implement from the Gateway from the domain.
-
-    public Mono<ObjectResponse> testGet() {
-
-        return client
-            .get()
-            .retrieve()
-            .bodyToMono(ObjectResponse.class);
-
+            Response response = client.newCall(request).execute();
+            if (response.code() == 404) {
+                throw new CountryNotFoundException("Country not found");
+            }
+            return response.body().string();
+        } catch (IOException e) {
+            throw new IOException("An error occurred while processing the data.", e);
+        }catch (CountryNotFoundException e) {
+            throw e;
+        }
     }
 
-    public Mono<ObjectResponse> testPost() {
+    @Override
+    public ConsumeData getDataCountry(String name) throws CountryNotFoundException {
+        try {
 
-        ObjectRequest request = ObjectRequest.builder()
-            .val1("exampleval1")
-            .val2("exampleval2")
-            .build();
-
-        return client
-            .post()
-            .body(Mono.just(request), ObjectRequest.class)
-            .retrieve()
-            .bodyToMono(ObjectResponse.class);
+            Gson json = new Gson();
+            ObjectResponse[] response = ObjectResponse.fromJson(getResponse(name));
+            return ConsumeData.builder().area(response[0].getArea())
+                    .population(response[0].getPopulation()).build();
+        } catch (IOException e) {
+            throw new CountryNotFoundException("Error retrieving country data.", e);
+        }catch (CountryNotFoundException e) {
+            throw e;
+        }
     }
 }
+

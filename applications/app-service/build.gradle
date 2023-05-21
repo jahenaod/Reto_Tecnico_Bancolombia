@@ -1,12 +1,12 @@
 apply plugin: 'org.springframework.boot'
 
 dependencies {
-	implementation project( ':reto_tecnico_bancolombia')
+	implementation project( ':reto-tecnico-bancolombia')
 	implementation project( ':api-rest')
 	implementation 'org.reactivecommons.utils:object-mapper:0.1.0'
-	implementation project( ':r2dbc-postgresql')
+	implementation project( ':jpa-repository')
 	implementation project( ':rest-consumer')
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation project(':model')
     implementation project(':usecase')
     implementation 'org.springframework.boot:spring-boot-starter'
