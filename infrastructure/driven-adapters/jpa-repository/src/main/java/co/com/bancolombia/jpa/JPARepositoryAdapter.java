@@ -1,20 +1,32 @@
 package co.com.bancolombia.jpa;
 
-import co.com.bancolombia.jpa.helper.AdapterOperations;
+import co.com.bancolombia.jpa.entities.CountryEntity;
+import co.com.bancolombia.model.retotecnicobancolombia.RetoTecnicoBancolombia;
+import co.com.bancolombia.model.retotecnicobancolombia.gateways.RetoTecnicoBancolombiaRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JPARepositoryAdapter extends AdapterOperations<Object/* change for domain model */, Object/* change for adapter model */, String, JPARepository>
-// implements ModelRepository from domain
-{
+public class JPARepositoryAdapter implements RetoTecnicoBancolombiaRepository {
+
+    private final JPARepository repository;
+    private final ObjectMapper mapper;
 
     public JPARepositoryAdapter(JPARepository repository, ObjectMapper mapper) {
-        /**
-         *  Could be use mapper.mapBuilder if your domain model implement builder pattern
-         *  super(repository, mapper, d -> mapper.mapBuilder(d,ObjectModel.ObjectModelBuilder.class).build());
-         *  Or using mapper.map with the class of the object model
-         */
-        super(repository, mapper, d -> mapper.map(d, Object.class/* change for domain model */));
+        this.repository = repository;
+        this.mapper = mapper;
+    }
+
+    @Override
+    public RetoTecnicoBancolombia postCountryData(double area, long population) {
+
+        RetoTecnicoBancolombia entity = new RetoTecnicoBancolombia();
+        entity.setArea(area);
+        entity.setPopulation(population);
+
+        CountryEntity savedEntity = repository.save(mapper.map(entity, CountryEntity.class));
+
+        return mapper.map(savedEntity, RetoTecnicoBancolombia.class);
     }
 }
+

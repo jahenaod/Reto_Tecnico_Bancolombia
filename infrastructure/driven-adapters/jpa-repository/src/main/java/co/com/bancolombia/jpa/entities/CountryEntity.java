@@ -5,12 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "logger")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Country {
-    @Id
+public class CountryEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
+
+    @Id
+    @Column(name = "population")
     private long population;
+
+    @Column(name = "area")
     private double area;
 }

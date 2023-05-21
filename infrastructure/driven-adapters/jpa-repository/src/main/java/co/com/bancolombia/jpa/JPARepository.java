@@ -1,7 +1,9 @@
 package co.com.bancolombia.jpa;
 
+import co.com.bancolombia.jpa.entities.CountryEntity;
+import co.com.bancolombia.model.retotecnicobancolombia.RetoTecnicoBancolombia;
+import jakarta.persistence.Table;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.QueryByExampleExecutor;
 
-public interface JPARepository extends CrudRepository<Object/* change for adapter model */, String>, QueryByExampleExecutor<Object/* change for adapter model */> {
+public interface JPARepository extends CrudRepository<CountryEntity, String> {
 }
