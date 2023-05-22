@@ -11,4 +11,5 @@ import lombok.*;
 public class RetoTecnicoBancolombia {
     private double area;
      private long population;
+     private String name;
 }

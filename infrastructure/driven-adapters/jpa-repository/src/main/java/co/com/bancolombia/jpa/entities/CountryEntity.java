@@ -2,6 +2,7 @@ package co.com.bancolombia.jpa.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.math.BigInteger;
 @Table(name="logger2")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder(toBuilder = true)
 @Data
 public class CountryEntity {
 

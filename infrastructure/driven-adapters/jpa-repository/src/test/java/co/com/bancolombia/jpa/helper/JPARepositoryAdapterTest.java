@@ -32,8 +32,14 @@ public class JPARepositoryAdapterTest {
         double area = 100.0;
         long population = 1000000;
 
-        // Mock the behavior of the repository's save method
-        Mockito.when(repository.save(Mockito.any(CountryEntity.class))).thenReturn(new CountryEntity());
+        try {
+            // Mock the behavior of the repository's save method
+            Mockito.when(repository.save(Mockito.any(CountryEntity.class))).thenReturn(CountryEntity
+                    .builder().area(area).name(name).population(population).build());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         // Call the postCountryData method
         RetoTecnicoBancolombia result = repositoryAdapter.postCountryData(name, area, population);

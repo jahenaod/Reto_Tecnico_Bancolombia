@@ -3,11 +3,15 @@ package co.com.bancolombia.jpa;
 import co.com.bancolombia.jpa.entities.CountryEntity;
 import co.com.bancolombia.model.retotecnicobancolombia.RetoTecnicoBancolombia;
 import co.com.bancolombia.model.retotecnicobancolombia.gateways.RetoTecnicoBancolombiaRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class JPARepositoryAdapter implements RetoTecnicoBancolombiaRepository {
+
+    private static final Logger logger = LogManager.getLogger(JPARepositoryAdapter.class.getName());
 
     private final JPARepository repository;
     private final ObjectMapper mapper;
@@ -19,6 +23,7 @@ public class JPARepositoryAdapter implements RetoTecnicoBancolombiaRepository {
 
     @Override
     public RetoTecnicoBancolombia postCountryData(String name, double area, long population) {
+
         try {
             CountryEntity entity = new CountryEntity();
             entity.setArea(area);
@@ -26,10 +31,11 @@ public class JPARepositoryAdapter implements RetoTecnicoBancolombiaRepository {
             entity.setName(name);
 
             CountryEntity savedEntity = repository.save(entity);
+            logger.info(savedEntity.toString());
         }catch (Exception e){
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
-        return null;
+        return RetoTecnicoBancolombia.builder().area(area).population(population).name(name).build();
     }
 }
 
