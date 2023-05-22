@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testSuite id="2356524a-d2ee-4fbe-ae19-784c8b2c86f3" name="CountriesTestSuite"
+               xmlns:con="http://eviware.com/soapui/config">
+    <con:description>TestSuite generated for REST Service [http://localhost:8080]</con:description>
+    <con:settings/>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="1426a732-cbb4-4791-85e0-1d12dd5e3a1a" failOnError="true" failTestCaseOnErrors="true"
+                  keepSession="false" maxResults="0" name="Colombia TestCase" searchProperties="true">
+        <con:description>TestCase generated for REST Resource [Colombia] located at [/api/argentina]</con:description>
+        <con:settings/>
+        <con:testStep type="restrequest" name="Request 1" id="36a3d7da-01f1-4804-bdc5-7148c7c6c078">
+            <con:settings/>
+            <con:config service="http://localhost:8080" resourcePath="/api/argentina" methodName="Argentina 1"
+                        xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                <con:restRequest name="Request 1" id="57ff73b2-6691-432a-8313-aecf5cfc703c"
+                                 mediaType="application/json">
+                    <con:settings>
+                        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+                        </con:setting>
+                    </con:settings>
+                    <con:endpoint>http://localhost:8080</con:endpoint>
+                    <con:request/>
+                    <con:originalUri>http://localhost/api/argentina</con:originalUri>
+                    <con:assertion type="Simple Contains" id="850f9587-4a25-4398-9e70-375971be8a0b" name="Contains">
+                        <con:configuration>
+                            <token>2780400</token>
+                            <ignoreCase>false</ignoreCase>
+                            <useRegEx>false</useRegEx>
+                        </con:configuration>
+                    </con:assertion>
+                    <con:assertion type="Simple Contains" id="cfbe0340-9e6c-4bac-8f03-5f3ae19c858a" name="Contains 1">
+                        <con:configuration>
+                            <token>45376763</token>
+                            <ignoreCase>false</ignoreCase>
+                            <useRegEx>false</useRegEx>
+                        </con:configuration>
+                    </con:assertion>
+                    <con:credentials>
+                        <con:authType>No Authorization</con:authType>
+                    </con:credentials>
+                    <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                    <con:jmsPropertyConfig/>
+                    <con:parameters/>
+                </con:restRequest>
+            </con:config>
+        </con:testStep>
+        <con:properties/>
+    </con:testCase>
+    <con:properties/>
+</con:testSuite>
