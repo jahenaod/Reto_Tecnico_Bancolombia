@@ -33,8 +33,8 @@ class ConsumeDataUseCaseTest {
     void testGetDataCountry() throws CountryNotFoundException {
         // Given
         String countryName = "Colombia";
-        Long areaTest = (long) 1141748.0;
-        double populationTest = 50882884;
+        long areaTest = (long) 1141748.0;
+        long populationTest = 50882884;
         ConsumeData consumeData = new ConsumeData(countryName, populationTest, areaTest);
 
         when(consumeDataRepository.getDataCountry(countryName)).thenReturn(consumeData);

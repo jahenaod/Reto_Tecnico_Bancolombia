@@ -11,7 +11,7 @@ import lombok.*;
 public class ObjectResponse {
 
     private long population;
-    private double area;
+    private long area;
 
     public static ObjectResponse[] fromJson(String json) {
         Gson gson = new Gson();

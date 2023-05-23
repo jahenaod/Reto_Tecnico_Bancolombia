@@ -13,6 +13,6 @@ import lombok.Setter;
 public class ConsumeData {
     String name;
 
-    private double area;
-    private Long population;
+    private long area;
+    private long population;
 }
