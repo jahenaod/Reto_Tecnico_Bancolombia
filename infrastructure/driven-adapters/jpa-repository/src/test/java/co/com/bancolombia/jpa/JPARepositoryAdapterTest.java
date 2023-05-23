@@ -1,4 +1,4 @@
-package co.com.bancolombia.jpa.helper;
+package co.com.bancolombia.jpa;
 
 import co.com.bancolombia.jpa.JPARepository;
 import co.com.bancolombia.jpa.JPARepositoryAdapter;

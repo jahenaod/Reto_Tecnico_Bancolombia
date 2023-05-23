@@ -3,8 +3,6 @@ package co.com.bancolombia.consumer;
 import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.ConsumeData;
 import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.exception.CountryNotFoundException;
 import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.gateways.ConsumeDataRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -21,7 +19,6 @@ public class RestConsumer implements ConsumeDataRepository {
     @Value("${adapter.restconsumer.url}")
     private String url;
     private final OkHttpClient client;
-    private final ObjectMapper mapper;
 
     public String getResponse(String name) throws IOException, CountryNotFoundException {
         try {
@@ -46,13 +43,11 @@ public class RestConsumer implements ConsumeDataRepository {
     @Override
     public ConsumeData getDataCountry(String name) throws CountryNotFoundException {
         try {
-
-            Gson json = new Gson();
             ObjectResponse[] response = ObjectResponse.fromJson(getResponse(name));
             return ConsumeData.builder().area(response[0].getArea())
                     .population(response[0].getPopulation()).build();
         } catch (IOException e) {
-            throw new CountryNotFoundException("Error retrieving country data.", e);
+            throw new CountryNotFoundException("Error retrieving country data.");
         }catch (CountryNotFoundException e) {
             throw e;
         }

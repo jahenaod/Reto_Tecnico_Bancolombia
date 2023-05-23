@@ -4,7 +4,6 @@ import co.com.bancolombia.model.retotecnicobancolombia.gateways.RetoTecnicoBanco
 import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.ConsumeData;
 import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.exception.CountryNotFoundException;
 import co.com.bancolombia.model.retotecnicobancolombiaconsumedata.gateways.ConsumeDataRepository;
-import co.com.bancolombia.usecase.retotecnicobancolombiaconsumedata.ConsumeDataUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

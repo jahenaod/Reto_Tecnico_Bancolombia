@@ -1,6 +1,5 @@
 package co.com.bancolombia.consumer.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.okhttp3.OkHttpMetricsEventListener;
 import okhttp3.OkHttpClient;
@@ -22,10 +21,4 @@ public class RestConsumerConfig {
         return OkHttpMetricsEventListener.builder(registry, "http-outgoing")
                 .uriMapper(req -> req.url().encodedPath()).build();
     }
-
-    @Bean
-    public ObjectMapper getObjectMapper() {
-        return new ObjectMapper();
-    }
-
 }
