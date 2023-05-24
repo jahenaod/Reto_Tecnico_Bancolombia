@@ -22,7 +22,7 @@ public class JPARepositoryAdapter implements RetoTecnicoBancolombiaRepository {
     }
 
     @Override
-    public RetoTecnicoBancolombia postCountryData(String name, double area, long population) {
+    public RetoTecnicoBancolombia postCountryData(String name, long area, long population) {
 
         try {
             CountryEntity entity = new CountryEntity();

@@ -29,7 +29,7 @@ public class JPARepositoryAdapterTest {
     @Test
     public void testPostCountryData_SuccessfulSave() {
         String name = "CountryName";
-        double area = 100.0;
+        long area = (long)100.0;
         long population = 1000000;
 
         try {

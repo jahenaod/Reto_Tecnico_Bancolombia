@@ -1,70 +1,119 @@
 package co.com.bancolombia.jpa;
 
+import co.com.bancolombia.jpa.config.DBSecret;
+import co.com.bancolombia.jpa.config.JpaConfig;
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.assertj.core.groups.Properties;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+
+import javax.sql.DataSource;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class JpaConfigTest {
-    /*
-    @Mock
-    private Environment environment;
-    private co.com.bancolombia.jpa.config.DBSecret secret;
 
-    @Value("${spring.datasource.driverClassName}")
-    private String driverClass;
-    @InjectMocks
-    private JpaConfig jpaConfig;
+    @Mock
+    private Environment mockEnv;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
-        jpaConfig = new JpaConfig();
     }
 
     @Test
-    void testDbSecret() {
-        // Set up the mocked environment properties
-        when(environment.getProperty("spring.datasource.url")).thenReturn("jdbc:mysql://localhost:3306/mydb");
-        when(environment.getProperty("spring.datasource.username")).thenReturn("root");
-        when(environment.getProperty("spring.datasource.password")).thenReturn("password");
-
-        // Call the method under test
-        DBSecret dbSecret = jpaConfig.dbSecret(environment);
-
-        // Verify that the DBSecret object is created correctly
-        assertNotNull(dbSecret);
-        assertEquals("jdbc:mysql://localhost:3306/mydb", dbSecret.getUrl());
-        assertEquals("root", dbSecret.getUsername());
-        assertEquals("password", dbSecret.getPassword());
+    public void testDBSecretBuilder() {
+        // Create a sample DBSecret instance
+        DBSecret dbSecret = DBSecret.builder()
+                .url("jdbc:mysql://localhost:3306/db_test")
+                .username("testuser")
+                .password("testpassword")
+                .build();
+        //funciona
+        // Assert the values using getter methods
+        Assertions.assertEquals("jdbc:mysql://localhost:3306/db_test", dbSecret.getUrl());
+        Assertions.assertEquals("testuser", dbSecret.getUsername());
+        Assertions.assertEquals("testpassword", dbSecret.getPassword());
     }
+
     @Test
-    void testDataSource() {
-        // Create a mock DBSecret object
-        when(secret.getUrl()).thenReturn("jdbc:mysql://localhost:3306/mydb");
-        when(secret.getUsername()).thenReturn("root");
-        when(secret.getPassword()).thenReturn("password");
+    public void testDBSecretBean() {
+        // Mock the environment properties
+        when(mockEnv.getProperty("spring.datasource.url")).thenReturn("jdbc:mysql://localhost:3306/db_test");
+        when(mockEnv.getProperty("spring.datasource.username")).thenReturn("testuser");
+        when(mockEnv.getProperty("spring.datasource.password")).thenReturn("testpassword");
 
-        // Set up the mocked driver class name
-        String driverClass = "com.mysql.jdbc.Driver";
+        // Create an instance of JpaConfig to test the DBSecret bean creation
+        JpaConfig jpaConfig = new JpaConfig();
 
-        // Call the method under test
-        HikariDataSource dataSource = (HikariDataSource) jpaConfig.datasource(secret, driverClass);
+        // Invoke the dbSecret bean method
+        DBSecret dbSecret = jpaConfig.dbSecret(mockEnv);
 
-        // Verify that the HikariDataSource is created correctly
-        assertNotNull(dataSource);
-        assertEquals("jdbc:mysql://localhost:3306/mydb", dataSource.getJdbcUrl());
-        assertEquals("root", dataSource.getUsername());
-        assertEquals("password", dataSource.getPassword());
-        assertEquals("com.mysql.jdbc.Driver", dataSource.getDriverClassName());
+        // Assert the DBSecret values
+        Assertions.assertEquals("jdbc:mysql://localhost:3306/db_test", dbSecret.getUrl());
+        Assertions.assertEquals("testuser", dbSecret.getUsername());
+        Assertions.assertEquals("testpassword", dbSecret.getPassword());
     }
+    /*
+    @Test
+    public void testDataSourceBean() {
+        // Create a mock DBSecret instance
+        DBSecret mockSecret = DBSecret.builder()
+                .url("jdbc:mysql://localhost:3306/db_test")
+                .username("testuser")
+                .password("testpassword")
+                .build();
+
+        // Create an instance of JpaConfig to test the dataSource bean creation
+        JpaConfig jpaConfig = new JpaConfig();
+
+        // Invoke the dataSource bean method
+        DataSource dataSource = jpaConfig.datasource(mockSecret, "com.mysql.jdbc.Driver");
+
+        // Assert the DataSource configuration
+        assertTrue(dataSource instanceof HikariDataSource);
+        HikariDataSource hikariDataSource = (HikariDataSource) dataSource;
+        HikariConfig hikariConfig = hikariDataSource.getHikariConfig();
+        assertEquals("jdbc:mysql://localhost:3306/db_test", hikariConfig.getJdbcUrl());
+        assertEquals("testuser", hikariConfig.getUsername());
+        assertEquals("testpassword", hikariConfig.getPassword());
+        assertEquals("com.mysql.jdbc.Driver", hikariConfig.getDriverClassName());
+    }
+}
 
      */
+/*
+    @Test
+    public void testEntityManagerFactoryBean() {
+        // Create a mock DataSource
+        DataSource mockDataSource = mock(DataSource.class);
+
+        // Create an instance of JpaConfig to test the entityManagerFactory bean creation
+        JpaConfig jpaConfig = new JpaConfig();
+
+        // Invoke the entityManagerFactory bean method
+        LocalContainerEntityManagerFactoryBean entityManagerFactory =
+                jpaConfig.entityManagerFactory(mockDataSource, "org.hibernate.dialect.MySQL5Dialect");
+
+        // Assert the EntityManagerFactory configuration
+        assertNotNull(entityManagerFactory);
+        assertEquals(mockDataSource, entityManagerFactory.getDataSource());
+        assertEquals("co.com.bancolombia.jpa", entityManagerFactory.getPackagesToScan());
+        assertTrue(entityManagerFactory.getJpaVendorAdapter() instanceof HibernateJpaVendorAdapter);
+
+        Properties jpaProperties = entityManagerFactory.getJpaProperties();
+        assertEquals("org.hibernate.dialect.MySQL5Dialect", jpaProperties.getProperty("hibernate.dialect"));
+    }
+
+ */
+
 }
