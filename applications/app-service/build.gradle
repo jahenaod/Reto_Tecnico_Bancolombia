@@ -17,6 +17,10 @@ tasks.register('explodedJar', Copy) {
     with jar
     into "${buildDir}/exploded"
 }
+apply plugin:'application'
+application {
+    mainClass = 'co.com.bancolombia.MainApplication'
+}
 
 jar {
     // To disable the *-plain.jar

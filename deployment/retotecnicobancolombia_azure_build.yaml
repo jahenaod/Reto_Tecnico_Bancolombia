@@ -1,14 +1,16 @@
+# Gradle
+# Build your Java project and run tests with Gradle using a Gradle wrapper script.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
 name: $(Build.SourceBranchName).$(date:yyyyMMdd)$(rev:.r)
 
 variables:
   - name: 'Artifactory.Repository'
-    value: 'build-RetoTecnicoBancolombia'
   - name: 'Artifact.Name'
-    value: 'RetoTecnicoBancolombia'
 
 resources:
-  - repo: self
-    clean: true
+ - repo: self
+   clean: true
 
 trigger:
   branches:
@@ -24,45 +26,47 @@ stages:
   - job: build
     displayName: 'Build'
     pool:
-      name: Build
-      demands:
-        - java
+      name: Default
     steps:
     - task: SonarQubePrepare@5
       displayName: 'Prepare analysis on SonarQube'
       inputs:
-        SonarQube: SonarQube
-        scannerMode: Other
+        SonarQube: 'sonar-connection1'
+        scannerMode: 'Other'
         extraProperties: |
           sonar.projectKey=$(Build.Repository.Name)
           sonar.projectName=$(Build.Repository.Name)
           sonar.projectVersion=$(Build.BuildNumber)
-
     - task: Gradle@3
       displayName: 'Build and Test'
       inputs:
         workingDirectory: .
-        gradleWrapperFile: gradlew
+        gradleWrapperFile: 'gradlew'
         tasks: 'clean build jacocoMergedReport'
+        jdkArchitectureOption: 'x64'
         publishJUnitResults: true
         testResultsFiles: '**/TEST-*.xml'
-        sonarQubeRunAnalysis: true
         sqGradlePluginVersionChoice: 'build'
-
     - task: PublishCodeCoverageResults@1
       displayName: 'Publish code coverage'
       inputs:
         summaryFileLocation: '$(System.DefaultWorkingDirectory)/build/reports/jacocoMergedReport/jacocoMergedReport.xml'
         reportDirectory: '$(System.DefaultWorkingDirectory)/build/reports/jacocoMergedReport/html'
-
+    - task: SonarQubeAnalyze@5
+      displayName: 'Run code analysis'
     - task: Sonar-buildbreaker@8
       displayName: 'Quality Gate'
       inputs:
-        SonarQube: SonarQube
-
+        SonarQube: 'sonar-connection1'
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact'
       condition: in(variables['Build.SourceBranch'], 'refs/heads/main', 'refs/heads/trunk', 'refs/heads/master')
       inputs:
-        PathtoPublish: '$(System.DefaultWorkingDirectory)/applications/app-service/build/libs/'
-        ArtifactName: '$(Artifact.Name)'
+        PathtoPublish: '$(System.DefaultWorkingDirectory)'
+        ArtifactName: 'Web_server_Artifact'
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'],'refs/heads/main'))
+        
+
+
+
+

@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class RetoTecnicoBancolombia {
-    private double area;
+    private long area;
      private long population;
+     private String name;
 }
